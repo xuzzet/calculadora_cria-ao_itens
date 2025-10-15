@@ -7,13 +7,13 @@
 <style>
   :root{--bg:#14102b;--card:#1d1742;--brand:#a78bfa;--soft:#cec6ff;--text:#fbf9ff}
   *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}
-  .wrap{width:min(760px,92vw)} .card{background:var(--card);border:1px solid #40317b;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:22px}
+  .wrap{max-width:760px;width:100%;padding:16px} .card{background:var(--card);border:1px solid #40317b;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:22px}
   h1{font-size:1.25rem;margin:0 0 10px} .subtitle{color:var(--soft);font-size:.95rem;margin:0 0 18px}
-  .grid{display:grid;grid-template-columns:1fr 1fr;gap:14px} .row{display:flex;flex-direction:column;gap:8px}
+  .grid{display:grid;grid-template-columns:1fr;gap:14px} .row{display:flex;flex-direction:column;gap:8px}
   label{font-size:.9rem;color:#e6e0ff}
   input[type=number]{background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none}
   input[type=number]:focus{border-color:#b8a6ff}
-  .btn{background:var(--brand);color:white;border:0;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer}
+  .btn{background:var(--brand);color:white;border:0;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;width:100%}
   .btn:hover{background:#b399ff}
   .muted{color:var(--soft);font-size:.85rem}
   .result{background:#221b57;border:1px solid #4a3aa6;border-radius:14px;padding:14px}
@@ -21,7 +21,15 @@
   .kpi{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0}
   .kpi span{color:var(--soft);font-size:.9rem} .kpi strong{font-size:1.2rem}
   .formula{margin-top:10px;border-top:1px dashed #4f3fa0;padding-top:10px;font-size:.88rem;color:#eae6ff}
-  .foot{display:flex;justify-content:space-between;align-items:center;margin-top:14px}
+  .foot{display:flex;flex-direction:column;gap:10px;align-items:stretch;margin-top:14px}
+  
+  /* Responsivo: em telas médias/grandes, volta a duas colunas e footer em linha */
+  @media (min-width: 720px){
+    .grid{grid-template-columns:1fr 1fr}
+    .foot{flex-direction:row;align-items:center;justify-content:space-between}
+    .btn{width:auto}
+    .wrap{padding:0}
+  }
 </style>
 </head>
 <body>
