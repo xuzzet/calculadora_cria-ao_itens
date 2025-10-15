@@ -9,11 +9,9 @@
   *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}
   .wrap{max-width:760px;width:100%;padding:16px} .card{background:var(--card);border:1px solid #40317b;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:22px}
   h1{font-size:1.25rem;margin:0 0 10px} .subtitle{color:var(--soft);font-size:.95rem;margin:0 0 18px}
-  .grid{display:grid;grid-template-columns:1fr;gap:14px} .row{display:flex;flex-direction:column;gap:8px;min-width:0}
+  .grid{display:grid;grid-template-columns:1fr;gap:14px} .row{display:flex;flex-direction:column;gap:8px}
   label{font-size:.9rem;color:#e6e0ff}
-  input[type=number]{background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none;width:100%;max-width:100%;appearance:textfield;-moz-appearance:textfield}
-  input[type=number]::-webkit-outer-spin-button,
-  input[type=number]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
+  input[type=number]{background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none}
   input[type=number]:focus{border-color:#b8a6ff}
   .btn{background:var(--brand);color:white;border:0;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;width:100%}
   .btn:hover{background:#b399ff}
@@ -50,7 +48,7 @@
         <div class="row">
           <label for="mult">Multiplicador base (tibares por PM²)</label>
           <input id="mult" type="number" min="1" step="1" value="30">
-          <span class="muted">Padrão: 30 tibares. Ajuste caso vier a necessidade.</span>
+          <span class="muted">Padrão: 30 tibares. Ajuste se sua mesa usar outro valor.</span>
         </div>
       </div>
 
