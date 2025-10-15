@@ -5,25 +5,46 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Calculadora de Fabricação</title>
 <style>
-  :root{--bg:#14102b;--card:#1d1742;--brand:#a78bfa;--soft:#cec6ff;--text:#fbf9ff}
-  *{box-sizing:border-box} body{margin:0;background:var(--bg);color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}
+  :root{--bg:#14102b;--card:#1d1742;--card-2:#231b57;--brand:#a78bfa;--brand-hi:#c7b6ff;--soft:#cec6ff;--text:#fbf9ff;--ring:rgba(167,139,250,.45)}
+  *{box-sizing:border-box} body{margin:0;background:
+    radial-gradient(1200px 600px at 10% 0%, #1a1640 0%, transparent 40%),
+    radial-gradient(900px 500px at 95% 20%, #261d58 0%, transparent 45%),
+    var(--bg);
+    color:var(--text);font-family:Inter,system-ui,Segoe UI,Roboto,Arial,sans-serif;display:flex;min-height:100vh;align-items:center;justify-content:center}
   .wrap{max-width:760px;width:100%;padding:16px} .card{background:var(--card);border:1px solid #40317b;border-radius:18px;box-shadow:0 10px 30px rgba(0,0,0,.35);padding:22px}
-  h1{font-size:1.25rem;margin:0 0 10px} .subtitle{color:var(--soft);font-size:.95rem;margin:0 0 18px}
+  h1{font-size:1.35rem;margin:0 0 8px} .subtitle{color:var(--soft);font-size:.95rem;margin:0 0 14px}
+  .section-title{margin:10px 0 8px;font-size:1.05rem;color:#efeaff}
   .grid{display:grid;grid-template-columns:1fr;gap:14px} .row{display:flex;flex-direction:column;gap:8px;min-width:0}
   label{font-size:.9rem;color:#e6e0ff}
-  input[type=number]{background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none;width:100%;max-width:100%;appearance:textfield;-moz-appearance:textfield}
+  input[type=number]{background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;padding:12px 14px;font-size:1rem;outline:none;width:100%;max-width:100%;appearance:textfield;-moz-appearance:textfield;transition:border-color .15s ease, box-shadow .15s ease, background .15s ease}
+  input::placeholder{color:#b9b0ea}
   input[type=number]::-webkit-outer-spin-button,
   input[type=number]::-webkit-inner-spin-button{ -webkit-appearance: none; margin: 0; }
-  input[type=number]:focus{border-color:#b8a6ff}
-  .btn{background:var(--brand);color:white;border:0;border-radius:12px;padding:12px 16px;font-weight:600;cursor:pointer;width:100%}
-  .btn:hover{background:#b399ff}
+  input[type=number]:focus{border-color:#b8a6ff;box-shadow:0 0 0 4px var(--ring)}
+  .btn{background:linear-gradient(180deg,var(--brand),#8f74ff);color:#0e0a1d;border:0;border-radius:12px;padding:12px 16px;font-weight:700;cursor:pointer;width:100%;transition:filter .15s ease, transform .05s ease, box-shadow .15s ease}
+  .btn:hover{filter:brightness(1.05)}
+  .btn:active{transform:scale(0.99)}
+  .btn:focus-visible{outline:none;box-shadow:0 0 0 4px var(--ring)}
   .muted{color:var(--soft);font-size:.85rem}
-  .result{background:#221b57;border:1px solid #4a3aa6;border-radius:14px;padding:14px}
+  .result{background:linear-gradient(180deg, var(--card), var(--card-2));border:1px solid #4a3aa6;border-radius:14px;padding:14px;box-shadow:0 8px 24px rgba(0,0,0,.35), inset 0 1px 0 rgba(255,255,255,.02)}
   .result h3{margin:0 0 10px;font-size:1rem}
   .kpi{display:flex;justify-content:space-between;align-items:baseline;margin:6px 0}
-  .kpi span{color:var(--soft);font-size:.9rem} .kpi strong{font-size:1.2rem}
+  .kpi span{color:var(--soft);font-size:.9rem} .kpi strong{font-size:1.2rem;font-variant-numeric:tabular-nums;letter-spacing:.2px}
   .formula{margin-top:10px;border-top:1px dashed #4f3fa0;padding-top:10px;font-size:.88rem;color:#eae6ff}
   .foot{display:flex;flex-direction:column;gap:10px;align-items:stretch;margin-top:14px}
+  
+  /* Calculadora normal */
+  .calc{margin-top:16px}
+  .calc .result{margin-bottom:10px}
+  .calc-display{width:100%;background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;padding:12px 14px;font-size:1.25rem;line-height:1.4;text-align:right;outline:none}
+  .calc-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+  .key{min-height:48px;background:#1a1540;color:var(--text);border:1px solid #4f3fa0;border-radius:12px;font-size:1rem;font-weight:600;cursor:pointer}
+  .key:hover{filter:brightness(1.08)}
+  .key:active{transform:scale(0.98)}
+  .key.op{background:var(--brand);border-color:#b399ff;color:#100b1f}
+  .key.action{background:#1f1a45;border-color:#4a3aa6;color:#eae6ff}
+  .key.equals{background:linear-gradient(180deg,var(--brand),#8f74ff);border-color:#b399ff;color:#100b1f}
+  .key.wide{grid-column:span 2}
   
   /* Responsivo: em telas médias/grandes, volta a duas colunas e footer em linha */
   @media (min-width: 720px){
@@ -31,6 +52,7 @@
     .foot{flex-direction:row;align-items:center;justify-content:space-between}
     .btn{width:auto}
     .wrap{padding:0}
+    h1{font-size:1.5rem}
   }
 </style>
 </head>
@@ -40,7 +62,8 @@
       <h1>Calculadora de Fabricação</h1>
   <p class="subtitle">Compra = <code>30 tibares × (PM²)</code> • Produção = <code>Compra ÷ 3</code> • Venda = <code>½ Compra + 10%</code> • CD = <code>20 + PM</code></p>
 
-      <div class="grid">
+  <h2 class="section-title">Fabricação</h2>
+  <div class="grid">
         <div class="row">
           <label for="pm">PM gastos</label>
           <input id="pm" type="number" min="0" step="1" placeholder="Ex: 17">
@@ -69,6 +92,40 @@
           <div class="formula" id="passo2"></div>
           <div class="formula" id="passo3"></div>
           <div class="formula" id="passo4"></div>
+        </div>
+      </div>
+
+      <!-- Calculadora normal -->
+      <h2 class="section-title">Calculadora</h2>
+      <div class="calc" aria-label="Calculadora">
+        <div class="result">
+          <h3>Visor</h3>
+          <input id="calcDisplay" class="calc-display" type="text" inputmode="decimal" autocomplete="off" autocorrect="off" spellcheck="false" aria-label="Visor da calculadora" />
+        </div>
+        <div class="calc-grid">
+          <button class="key action" data-act="clear">AC</button>
+          <button class="key action" data-act="negate">±</button>
+          <button class="key action" data-act="percent">%</button>
+          <button class="key op" data-insert="÷">÷</button>
+
+          <button class="key" data-insert="7">7</button>
+          <button class="key" data-insert="8">8</button>
+          <button class="key" data-insert="9">9</button>
+          <button class="key op" data-insert="×">×</button>
+
+          <button class="key" data-insert="4">4</button>
+          <button class="key" data-insert="5">5</button>
+          <button class="key" data-insert="6">6</button>
+          <button class="key op" data-insert="-">−</button>
+
+          <button class="key" data-insert="1">1</button>
+          <button class="key" data-insert="2">2</button>
+          <button class="key" data-insert="3">3</button>
+          <button class="key op" data-insert="+">+</button>
+
+          <button class="key wide" data-insert="0">0</button>
+          <button class="key" data-insert=".">.</button>
+          <button class="key equals" data-act="equals">=</button>
         </div>
       </div>
 
@@ -116,6 +173,128 @@
   multEl.addEventListener('input', calc);
   document.getElementById('btnLimpar').addEventListener('click', ()=>{ pmEl.value=''; calc(); });
   calc();
+
+  // Calculadora normal
+  const calcDisplay = document.getElementById('calcDisplay');
+  let calcExp = '';
+
+  function ncUpdate(){ calcDisplay.value = calcExp; }
+  function ncInsert(ch){
+    if (calcExp.length > 48) return; // limite simples
+    // Evita dois operadores seguidos (exceto parênteses)
+    const ops = ['+','-','×','÷','*','/'];
+    const last = calcExp.slice(-1);
+    if (ops.includes(last) && ops.includes(ch)){
+      calcExp = calcExp.slice(0,-1) + ch;
+    } else {
+      calcExp += ch;
+    }
+    ncUpdate();
+  }
+  function ncClear(){ calcExp=''; ncUpdate(); }
+  function ncBack(){ calcExp = calcExp.slice(0,-1); ncUpdate(); }
+  function ncEval(){
+    if (!calcExp.trim()) return;
+    let expr = calcExp.replace(/×/g,'*').replace(/÷/g,'/');
+    if (!/^[-+/*().\d\s]*$/.test(expr)) { calcDisplay.value = 'Erro'; return; }
+    try{
+      const res = Function('"use strict";return('+expr+')')();
+      if (!Number.isFinite(res)) throw new Error('inv');
+      calcExp = String(res);
+      ncUpdate();
+    }catch(e){ calcDisplay.value = 'Erro'; }
+  }
+  
+  document.querySelectorAll('.calc-grid .key').forEach(btn=>{
+    btn.addEventListener('click', ()=>{
+      const act = btn.getAttribute('data-act');
+      const ins = btn.getAttribute('data-insert');
+      if (act === 'clear')  return ncClear();
+      if (act === 'back')   return ncBack();
+      if (act === 'equals') return ncEval();
+      if (act === 'negate') return ncNegate();
+      if (act === 'percent')return ncPercent();
+      if (ins) return ncInsert(ins);
+    });
+  });
+  
+  calcDisplay.addEventListener('keydown', (e)=>{
+    const k = e.key;
+    if ((/^[0-9]$/.test(k)) || ['+','-','*','/','.','(',')','%'].includes(k)){
+      e.preventDefault();
+      if (k === '%') return ncPercent();
+      ncInsert(k === '*' ? '×' : k === '/' ? '÷' : k);
+    } else if (k === 'Enter' || k === '='){
+      e.preventDefault(); ncEval();
+    } else if (k === 'Backspace'){
+      e.preventDefault(); ncBack();
+    } else if (k === 'Escape' || k === 'Delete'){
+      e.preventDefault(); ncClear();
+    }
+  });
+  
+  // Inicializa visor
+  ncUpdate();
+
+  // Ações adicionais: ± e %
+  function ncNegate(){
+    let s = calcExp;
+    if (!s){ calcExp='-'; return ncUpdate(); }
+    // Se termina com operador, começa um número negativo
+    if (/[+×÷*/(]$/.test(s)) { calcExp += '-'; return ncUpdate(); }
+
+    // Tenta número dentro de parênteses no fim, ex: (123)
+    const mParen = s.match(/\((-?\d*\.?\d+)\)$/);
+    if (mParen){
+      const v = mParen[1];
+      const toggled = v.startsWith('-') ? v.slice(1) : '-' + v;
+      calcExp = s.replace(/\((-?\d*\.?\d+)\)$/, '(' + toggled + ')');
+      return ncUpdate();
+    }
+
+    // Último token numérico
+    const m = s.match(/(-?\d*\.?\d+)$/);
+    if (!m) return;
+    let val = m[1];
+    const start = s.length - val.length;
+    const before = s[start - 1] || '';
+
+    if (val.startsWith('-')){
+      // Remove o sinal
+      val = val.slice(1);
+      calcExp = s.slice(0, start) + val;
+    } else {
+      // Adiciona sinal. Se houver dígito ou ')' antes, usa parênteses
+      if (/[0-9.)]/.test(before)){
+        calcExp = s.slice(0, start) + '(-' + val + ')';
+      } else {
+        calcExp = s.slice(0, start) + '-' + val;
+      }
+    }
+    ncUpdate();
+  }
+
+  function ncPercent(){
+    let s = calcExp;
+    if (!s) return;
+    // Número no fim, possivelmente entre parênteses
+    const mParen = s.match(/\((-?\d*\.?\d+)\)$/);
+    if (mParen){
+      const num = parseFloat(mParen[1]);
+      if (!Number.isFinite(num)) return;
+      const pct = String(num / 100);
+      calcExp = s.replace(/\((-?\d*\.?\d+)\)$/, '(' + pct + ')');
+      return ncUpdate();
+    }
+    const m = s.match(/(-?\d*\.?\d+)$/);
+    if (!m) return;
+    const num = parseFloat(m[1]);
+    if (!Number.isFinite(num)) return;
+    const pct = String(num / 100);
+    const start = s.length - m[1].length;
+    calcExp = s.slice(0, start) + pct;
+    ncUpdate();
+  }
 </script>
 </body>
 </html>
